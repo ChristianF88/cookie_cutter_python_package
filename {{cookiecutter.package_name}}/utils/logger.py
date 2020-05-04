@@ -22,4 +22,4 @@ def get_logger(fmt='[%(asctime)s - %(levelname)s] - %(message)s'):
         logger.addHandler(handler)
         return logger
 
-LOG = get_logger()
+_log = get_logger()
