@@ -1,4 +1,6 @@
 {
     "package_name": "cookieTest",
+    "version":  "0.1.0",
+    "author":  "Christian Foerster",
     "email":  "christian.foerster@eawag.ch"
 }   
