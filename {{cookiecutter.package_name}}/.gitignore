@@ -1,6 +1,5 @@
 # python compiled files
 **/__pycache__/**
-**/*.py
 
 # jupyter notebook files
 **/.ipynb_checkpoints/**
