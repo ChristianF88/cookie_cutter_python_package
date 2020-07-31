@@ -11,15 +11,19 @@ class MultiLineFormatter(_logging.Formatter):
         record_string = record_string.replace('\n', '\n' + ' '*len(header))
         return record_string
 
-def get_logger(stream=_sys.stdout, fmt='[%(asctime)s - %(levelname)s] - %(message)s'):
+def get_logger(
+        stream=_sys.stdout,
+        logger_level=_logging.DEBUG,
+        fmt='[%(asctime)s - %(levelname)s] - %(message)s',
+        logger_id='streamLogger'
+):
 
-        logger = _logging.getLogger('streamLogger')
-        logger.setLevel(_logging.DEBUG)
+        logger = _logging.getLogger(logger_id)
+        logger.setLevel(logger_level)
         handler = _logging.StreamHandler(stream)
-        handler.setLevel(_logging.DEBUG)
+        handler.setLevel(logger_level)
         formatter = MultiLineFormatter(fmt, "%Y-%m-%d %H:%M:%S")
         handler.setFormatter(formatter)
         logger.addHandler(handler)
         return logger
 
-_log = get_logger()

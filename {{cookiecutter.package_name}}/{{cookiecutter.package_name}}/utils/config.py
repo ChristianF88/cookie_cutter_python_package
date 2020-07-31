@@ -1,4 +1,7 @@
 from configparser import ConfigParser as _ConfigParser
+from copy import deepcopy as _deepcopy
+import os as _os
+
 
 class Section:
     def __init__(self, **kwargs):
@@ -9,6 +12,7 @@ class Section:
         for key, val in self.__dict__.items():
             config += "%s: %s\n" % (key, val)
         return config
+
 
 class Config():
     def __init__(self, **kwargs):
@@ -23,8 +27,9 @@ class Config():
                 config += "%s: %s\n" % (key, val)
                 
         return config
-        
-def is_int(num):
+
+
+def str_is_int(num):
     try:
         int(num)
         return True
@@ -32,7 +37,7 @@ def is_int(num):
         return False
 
     
-def is_float(num):
+def str_is_float(num):
     if "." in num:
         try:
             float(num)
@@ -43,7 +48,7 @@ def is_float(num):
         return False
 
     
-def is_bool_none(expr):
+def str_is_bool_none(expr):
     if expr.lower() in [
         "true",  
         "false",  
@@ -52,8 +57,9 @@ def is_bool_none(expr):
         return True
     else:
         return False
-    
-def is_iterable(expr):
+
+
+def str_is_iterable(expr):
     if expr.startswith("[") and expr.endswith("]"):
         try:
             return isinstance(eval(expr), list)
@@ -69,13 +75,13 @@ def is_iterable(expr):
 
 
 def convert_entry(entry):
-    if is_int(entry):
+    if str_is_int(entry):
         return int(entry)
-    elif is_float(entry):
+    elif str_is_float(entry):
         return float(entry)
-    elif is_bool_none(entry):
+    elif str_is_bool_none(entry):
         return eval(entry.capitalize())
-    elif is_iterable(entry):
+    elif str_is_iterable(entry):
         return eval(entry)
     else:
         return entry
@@ -93,6 +99,10 @@ def read_config(file, convert=True, obj=False):
     obj: bool,
         return object representation
     """
+
+    if not _os.path.exists(file):
+        raise FileNotFoundError(f"The file '{file}' does not exist.")
+
     config = _ConfigParser()
     config.read(file)
     
@@ -113,6 +123,7 @@ def read_config(file, convert=True, obj=False):
         parsed = Config(**parsed)
     return parsed
 
+
 def write_config(file, config):
     """
     
@@ -123,22 +134,30 @@ def write_config(file, config):
     config: Configparser | dict | Config,
         passing the settings you want to write
     """
-    
-    if isinstance(config, Config):
-        conf = {}
-        for section, settings in config.__dict__.items():
+
+    config_dict = _deepcopy(config)
+    conf = {}
+
+    if isinstance(config_dict, Config):
+
+        for section, settings in config_dict.__dict__.items():
             conf[section] = {}
             for key, val in settings.__dict__.items():
                 conf[section][key] = val
-        config = conf
+        config_dict = conf
         
-    if isinstance(config, dict):
+    if isinstance(config_dict, dict):
         try:
+
+            for section, parameters in config_dict.items():
+                for key, value in parameters.items():
+                    config_dict[section][key] = value if isinstance(value, str) else repr(value)
+
             conf = _ConfigParser()
-            conf.read_dict(config)
+            conf.read_dict(config_dict)
+
         except Exception as e:
-            print(e)    
+            print(e)
         
     with open(file, "w+") as configfile:
         conf.write(configfile)
-        
