@@ -2,7 +2,7 @@ import unittest
 from io import StringIO as _StringIO
 import logging as _logging
 import re
-from grtr.utils.logger import *
+from {{cookiecutter.package_name}}.utils.logger import *
 
 def get_single_line_log_text(sio):
     header_and_text = sio.getvalue()

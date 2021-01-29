@@ -1,6 +1,6 @@
 import unittest
 import os
-from grtr.utils.config import *
+from {{cookiecutter.package_name}}.utils.config import *
 
 class TestConfigTypeConverter(unittest.TestCase):
 
