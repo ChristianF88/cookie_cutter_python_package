@@ -1,3 +1,10 @@
+#!/usr/bin/env python
+"""
+-------------------------------------------------------
+2021-02-01 -- Christian Foerster
+christian.foerster@eawag.ch
+-------------------------------------------------------
+"""
 from pathlib import Path
 
 def delete_memory(workdir, memory_ids):

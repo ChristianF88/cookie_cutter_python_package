@@ -1,3 +1,10 @@
+#!/usr/bin/env python
+"""
+-------------------------------------------------------
+2021-02-01 -- Christian Foerster
+christian.foerster@eawag.ch
+-------------------------------------------------------
+"""
 from configparser import ConfigParser as _ConfigParser
 from copy import deepcopy as _deepcopy
 import os as _os

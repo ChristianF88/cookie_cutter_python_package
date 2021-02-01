@@ -1,3 +1,10 @@
+#!/usr/bin/env python
+"""
+-------------------------------------------------------
+2021-02-01 -- Christian Foerster
+christian.foerster@eawag.ch
+-------------------------------------------------------
+"""
 from sqlalchemy import create_engine
 from sqlalchemy import Table, String, DateTime, Column, Integer, Float, ForeignKey
 from sqlalchemy.dialects.mysql import DATETIME

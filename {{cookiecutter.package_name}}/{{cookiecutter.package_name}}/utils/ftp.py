@@ -1,3 +1,10 @@
+#!/usr/bin/env python
+"""
+-------------------------------------------------------
+2021-02-01 -- Christian Foerster
+christian.foerster@eawag.ch
+-------------------------------------------------------
+"""
 import os
 from ftplib import FTP
 from io import BytesIO

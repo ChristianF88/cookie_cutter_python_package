@@ -4,32 +4,42 @@
 
 ...
 
-## Installation
+## Setup
 
-Assuming you have python installed on your computer, all we have to do is install this package with `pip`.  
-
-> Attention: On linux and mac you might have to use `pip3` instead `pip`. 
-> Try:
-> ```sh
-> pip3 --help
-> ```
-> If that does not cause any error, use `pip3`!
-
-### Git
-
-If you have git installed and access to the this repository:
-
-**via https**
+**Set up a virtual environment with python**
 ```sh
-pip install git+https://gitlab.switch.ch/christian.foerster/{{cookiecutter.package_name}}.git
+python -m venv venv
 ```
 
-**via ssh** (ssh key required)
+**Activate the virtual environment**
+(Windows)
 ```sh
-pip install git+git@gitlab.switch.ch/christian.foerster/{{cookiecutter.package_name}}.git
+cd venv/Scripts/
+activate.bat
+cd .. && cd ..
 ```
 
-### No Git
+(Linux)
+```sh
+source venv/bin/activate
+```
+### Get package with Git
+**Clone git repo!**
+(https)
+```sh
+git clone https://gitlab.switch.ch/christian.foerster/chriesbach.git
+```
+(ssh)
+```sh
+git clone git@gitlab.switch.ch:christian.foerster/chriesbach.git
+```
+
+**Install python package!**
+```sh
+pip install -e chriesbach
+```
+
+### Get package without Git
 
 In case you do not have git installed.
 
@@ -37,15 +47,12 @@ In case you do not have git installed.
  - 2. unpack the downloaded repo
  - 3. install with pip:
  
+ **Install python package!**
  ```sh
 pip install <path-to-unpacked-repo>
  ```
 
- > **PS:**
- > Use `./` as `<path-to-unpacked-repo>` if your console's working directory is the unpacked datapool folder.
-
-
- ## Usage
+## Usage
 
  ```python
  import {{cookiecutter.package_name}}

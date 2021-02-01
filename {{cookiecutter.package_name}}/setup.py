@@ -1,3 +1,10 @@
+#!/usr/bin/env python
+"""
+-------------------------------------------------------
+2021-02-01 -- Christian Foerster
+christian.foerster@eawag.ch
+-------------------------------------------------------
+"""
 from setuptools import setup, find_packages
 
 setup(name='{{cookiecutter.package_name}}',
@@ -8,7 +15,7 @@ setup(name='{{cookiecutter.package_name}}',
         'Development Status :: early stage',
         'Programming Language :: Python :: 3',
       ],
-      install_requires=[],
+      install_requires=["sqlalchemy"],
       keywords='{{cookiecutter.package_name}}',
       packages=find_packages(),
       author='{{cookiecutter.author}}',
