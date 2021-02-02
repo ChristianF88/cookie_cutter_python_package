@@ -67,7 +67,7 @@ class FtpUtil:
     def download(self, sourcepath, destpath, file):
 
         self.__login()
-        self.ftp.cwd(f"{self.rootpath}/{destpath}")
+        self.ftp.cwd(f"{self.rootpath}/{sourcepath}")
         with open(os.path.join(destpath, file), 'wb+') as f:
             self.ftp.retrbinary('RETR ' + file, f.write)
         self.__logout()
