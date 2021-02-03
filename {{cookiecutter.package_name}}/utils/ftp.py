@@ -72,6 +72,17 @@ class FtpUtil:
             self.ftp.retrbinary('RETR ' + file, f.write)
         self.__logout()
 
+    def md5(self, sourcepath, file):
+
+        self.__login()
+        m = hashlib.md5()
+        self.ftp.cwd(f"{self.rootpath}/{sourcepath}")
+        self.ftp.retrbinary('RETR %s' % file, m.update)
+        md5_hash = m.hexdigest()
+        self.__logout()
+
+        return md5_hash
+
 
 def download_all(ftp_instance, folder, destination):
     for file in ftp_instance.ls(folder):
