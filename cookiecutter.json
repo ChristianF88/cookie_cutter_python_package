@@ -2,5 +2,6 @@
     "package_name": "grtr",
     "version":  "0.1.0",
     "author":  "Christian Foerster",
-    "email":  "christian.foerster@yandex.com"
+    "email":  "christian.foerster@eawag.ch",
+    "year": "2021"
 }   
