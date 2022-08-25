@@ -3,17 +3,16 @@ setup-project:
 	echo INIT GIT
 	git init
 	echo 
-	echo CREATE&ACTIVATE VENV
+	echo CREATE VENV
 	python -m venv venv
-	source venv/bin/ACTIVATE
 	echo UPDATE PIP
-	python -m pip --upgrade pip
+	venv/bin/python -m pip install --upgrade pip
 	echo 
 	echo INSTALLING PACKAGE
-	pip install -e .
+	venv/bin/pip install -e .
 	echo 
 	echo INSTALLING DEV DEPENDENCIES
-	pip install -r requirements_dev.txt
+	venv/bin/pip install -r requirements_dev.txt
 	echo 
 	echo CREATE HOOK
 	echo "#!/bin/sh" > .git/hooks/pre-commit 
