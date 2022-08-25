@@ -1,0 +1,27 @@
+image: python:slim-buster
+
+stages:
+  - style
+  - test
+
+style-check:
+  stage: style
+  before_script:
+    - apt update && apt install make -y
+  script:
+    - make install-dev
+    - make style-check
+
+test:
+  stage: test
+  before_script:
+    - apt update && apt install make -y
+  script:
+    - make install-dev
+    - make cov
+  artifacts:
+    paths:
+      - htmlcov
+    expire_in: 1 week
+
+  

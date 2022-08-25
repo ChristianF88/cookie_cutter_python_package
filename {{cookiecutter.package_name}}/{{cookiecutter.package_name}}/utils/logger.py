@@ -5,11 +5,11 @@
 christian.foerster@eawag.ch
 -------------------------------------------------------
 """
-import logging as _logging
-import sys as _sys
-import logging.handlers as _handlers
 import datetime as _dt
+import logging as _logging
+import logging.handlers as _handlers
 import os as _os
+import sys as _sys
 from random import randint as _randint
 
 
@@ -20,7 +20,7 @@ class MultiLineFormatter(_logging.Formatter):
             header, _ = record_string.split(record.message)
         else:
             header, _ = record_string.split(record.message + "\n" + record.exc_text)
-        record_string = record_string.replace('\n', '\n' + ' ' * len(header))
+        record_string = record_string.replace("\n", "\n" + " " * len(header))
         return record_string
 
 
@@ -46,7 +46,9 @@ class SingletonType(type):
 
 
 class MainLogger(_logging.Logger, metaclass=SingletonType):
-    def __init__(self, verbose=False, _format='[%(asctime)s - %(levelname)s] - %(message)s'):
+    def __init__(
+        self, verbose=False, _format="[%(asctime)s - %(levelname)s] - %(message)s"
+    ):
         self.__format = _format
         self.setLevel(_logging.DEBUG)
         super().__init__(__name__)
@@ -78,15 +80,12 @@ class MainLogger(_logging.Logger, metaclass=SingletonType):
         path, file = _os.path.split(file_path)
         name, suffix = _os.path.splitext(file)
         file_path = _os.path.join(
-            path,
-            "{}_{:%Y-%m-%d}{}".format(
-                name,
-                _dt.datetime.now(),
-                suffix
-            )
+            path, "{}_{:%Y-%m-%d}{}".format(name, _dt.datetime.now(), suffix)
         )
 
-        self._log_file_handler = _handlers.TimedRotatingFileHandler(file_path, when='midnight', backupCount=7)
+        self._log_file_handler = _handlers.TimedRotatingFileHandler(
+            file_path, when="midnight", backupCount=7
+        )
         # self._log_file_handler.suffix = "%Y%m%d.log"
         self._log_file_handler.setLevel(_logging.INFO)
         formatter = MultiLineFormatter(self.__format, "%Y-%m-%d %H:%M:%S")
@@ -144,18 +143,17 @@ class MainLogger(_logging.Logger, metaclass=SingletonType):
 
 
 def get_logger(
-        stream=_sys.stdout,
-        logger_level=_logging.DEBUG,
-        fmt='[%(asctime)s - %(levelname)s] - %(message)s',
-        logger_id="".join([chr(_randint(65, 120)) for i in range(10)])
+    stream=_sys.stdout,
+    logger_level=_logging.DEBUG,
+    fmt="[%(asctime)s - %(levelname)s] - %(message)s",
+    logger_id="".join([chr(_randint(65, 120)) for i in range(10)]),
 ):
 
-        logger = _logging.getLogger(logger_id)
-        logger.setLevel(logger_level)
-        handler = _logging.StreamHandler(stream)
-        handler.setLevel(logger_level)
-        formatter = MultiLineFormatter(fmt, "%Y-%m-%d %H:%M:%S")
-        handler.setFormatter(formatter)
-        logger.addHandler(handler)
-        return logger
-
+    logger = _logging.getLogger(logger_id)
+    logger.setLevel(logger_level)
+    handler = _logging.StreamHandler(stream)
+    handler.setLevel(logger_level)
+    formatter = MultiLineFormatter(fmt, "%Y-%m-%d %H:%M:%S")
+    handler.setFormatter(formatter)
+    logger.addHandler(handler)
+    return logger

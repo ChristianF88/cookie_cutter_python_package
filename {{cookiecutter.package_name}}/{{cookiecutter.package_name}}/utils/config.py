@@ -5,36 +5,33 @@
 christian.foerster@eawag.ch
 -------------------------------------------------------
 """
-from configparser import ConfigParser as _ConfigParser
-from copy import deepcopy as _deepcopy
+import datetime
 import os as _os
+from configparser import ConfigParser as _ConfigParser
+from configparser import ExtendedInterpolation as _ExtendedInterpolation
 
 
 def str_is_int(num):
     try:
         int(num)
         return True
-    except:
+    except ValueError:
         return False
 
-    
+
 def str_is_float(num):
     if "." in num:
         try:
             float(num)
             return True
-        except:
+        except ValueError:
             return False
     else:
         return False
 
-    
+
 def str_is_bool_none(expr):
-    if expr.lower() in [
-        "true",  
-        "false",  
-        "none"
-    ]:
+    if expr.lower() in ["true", "false", "none"]:
         return True
     else:
         return False
@@ -44,13 +41,13 @@ def str_is_iterable(expr):
     if expr.startswith("[") and expr.endswith("]"):
         try:
             return isinstance(eval(expr), list)
-        except:
+        except SyntaxError:
             return False
     elif expr.startswith("{") and expr.endswith("}"):
         try:
             return isinstance(eval(expr), dict)
-        except:
-            return False        
+        except SyntaxError:
+            return False
     else:
         return False
 
@@ -112,7 +109,6 @@ def convert_entry(entry):
 
 def read_config(file, convert=True):
     """
-    
     Parameters
     ----------
     file: str,
@@ -125,7 +121,8 @@ def read_config(file, convert=True):
         raise FileNotFoundError(f"The file '{file}' does not exist.")
     try:
 
-        config = _ConfigParser()
+        config = _ConfigParser(interpolation=_ExtendedInterpolation())
+        config.optionxform = str
         config.read(file)
 
         parsed = {}
@@ -141,39 +138,8 @@ def read_config(file, convert=True):
 
         return parsed
 
-    except Exception as e:
-        print("Unfortunately you passed an invalid configuration file '{file}', that cannot be read.")
+    except ValueError as e:
+        print(
+            f"Unfortunately you passed an invalid configuration file '{file}', that cannot be read."
+        )
         raise e
-
-
-def write_config(file, config):
-    """
-    
-    Parameters
-    ----------
-    file: str,
-        specifying path to *.ini file
-    config: Configparser | dict | Config,
-        passing the settings you want to write
-    """
-
-    config_dict = _deepcopy(config)
-    conf = {}
-        
-    if isinstance(config_dict, dict):
-        try:
-
-            for section, parameters in config_dict.items():
-                for key, value in parameters.items():
-                    config_dict[section][key] = value if isinstance(value, str) else repr(value)
-
-            conf = _ConfigParser()
-            conf.read_dict(config_dict)
-
-        except Exception as e:
-            print(e)
-        
-    with open(file, "w+") as configfile:
-        conf.write(configfile)
-
-
